@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ocean_radiation_level/data/colorschemes/color_schemes.g.dart';
-import 'package:flutter_ocean_radiation_level/presentation/home_screen.dart';
+import 'package:flutter_ocean_radiation_level/data/source/ocean_radiation_level_api.dart';
+import 'package:flutter_ocean_radiation_level/presentation/colorschemes/color_schemes.g.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -41,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   @override
@@ -66,18 +78,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+
+        onPressed: () {
+          fetchXmlDataApi();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: NavigationBar(
-        destinations: [
+        destinations: const [
           NavigationDestination(
             icon: Icon(Icons.account_circle),
             label: 'label',
           ),
           NavigationDestination(
-              icon: Icon(Icons.account_circle), label: 'label'),
+              icon: Icon(Icons.tab_sharp), label: 'Text'),
           NavigationDestination(
               icon: Icon(Icons.back_hand), label: 'hand'),
         ],

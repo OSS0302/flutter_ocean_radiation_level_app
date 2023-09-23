@@ -1,4 +1,4 @@
-package com.example.flutter_ocean_radiation_level
+package com.ohsangsoo.flutter_ocean_radiation_level
 
 import io.flutter.embedding.android.FlutterActivity
 
