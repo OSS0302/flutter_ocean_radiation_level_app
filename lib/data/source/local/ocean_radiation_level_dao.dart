@@ -1,33 +1,33 @@
-
 import 'package:flutter_ocean_radiation_level/data/keys.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 import 'package:hive/hive.dart';
 
 class OceanRaditionLevelDao {
   // 데이터 추가
-  Future<void> insertradition_level(
-      OceanRaditionLevelEntity RaditionListingEntities) async {
+  Future<void> insertraditionLevel(
+      OceanRaditionLevelEntity caditionListingEntities) async {
     final box = await Hive.openBox<OceanRaditionLevelEntity>(db);
-    await box.add(RaditionListingEntities);
-
+    await box.add(caditionListingEntities);
   }
 
   // 검색
-  Future<List<OceanRaditionLevelEntity>> searchRaditionLevel(String query) async {
+  Future<List<OceanRaditionLevelEntity>> searchRaditionLevel(
+      String query) async {
     final box = await Hive.openBox<OceanRaditionLevelEntity>(db);
-    final List<OceanRaditionLevelEntity> OceanRadiationList = box.values.toList();
+    final List<OceanRaditionLevelEntity> OceanRadiationList =
+    box.values.toList();
 
-    return OceanRadiationList
-        .where((e) =>
+    return OceanRadiationList.where((e) =>
     e.itmNm.toLowerCase().contains(query.toLowerCase()) ||
-        query.toUpperCase() == e.analStDt || query.toUpperCase() == e.analEndDt )
-    .toList();
+        query.toUpperCase() == e.analStDt ||
+        query.toUpperCase() == e.analEndDt).toList();
   }
 
   // 검색
   Future<List<OceanRaditionLevelEntity>> getAllRaditionLevel() async {
     final box = await Hive.openBox<OceanRaditionLevelEntity>(db);
-    final List<OceanRaditionLevelEntity> OceanRadiationList= box.values.toList();
+    final List<OceanRaditionLevelEntity> OceanRadiationList =
+    box.values.toList();
     print(box.keys);
     return OceanRadiationList;
   }

@@ -1,9 +1,11 @@
 import 'package:hive/hive.dart';
 
+part 'ocean_radition_level_entity.g.dart';
+
 @HiveType(typeId: 0)
 class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(0)
-  String  smpNo; // 시료번호
+  String smpNo; // 시료번호
   @HiveField(1)
   String gathMchnCd; // 시료수거지원코드
   @HiveField(2)
@@ -13,9 +15,9 @@ class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(4)
   String itmNm; // 품목명
   @HiveField(5)
-  String survLocCd ; // 조사점 코드
+  String survLocCd; // 조사점 코드
   @HiveField(6)
-  String survLocNm ; // 조사점 코드명
+  String survLocNm; // 조사점 코드명
   @HiveField(7)
   String gathDt; // 채취 날짜
   @HiveField(8)
@@ -27,9 +29,9 @@ class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(11)
   String analEndDt; // 분석종료일자
   @HiveField(12)
-  String survCiseCd ; // 조사항목코드
+  String survCiseCd; // 조사항목코드
   @HiveField(13)
-  String survCiseNm ; // 조사항목명
+  String survCiseNm; // 조사항목명
   @HiveField(14)
   String dtldSurvCiseNm; // 조사항목명 상세
   @HiveField(15)
@@ -41,9 +43,9 @@ class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(18)
   String charAnalRsltVal; // 문자분석결과값
   @HiveField(19)
-  String charPsngVal ; // 문자합격값
+  String charPsngVal; // 문자합격값
   @HiveField(20)
-  String charUnPsngVal ; // 문자불합격값
+  String charUnPsngVal; // 문자불합격값
   @HiveField(21)
   String numPsngMinVal; // 숫자합격최소값
   @HiveField(22)
@@ -55,9 +57,9 @@ class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(25)
   String analMchnCd; // 분석지원코드
   @HiveField(26)
-  String analMchnNm ; // 분석지원명
+  String analMchnNm; // 분석지원명
   @HiveField(27)
-  String analDevia ; // 분석결과편차
+  String analDevia; // 분석결과편차
   @HiveField(28)
   String mda; //MDA
   @HiveField(29)
@@ -65,70 +67,68 @@ class OceanRaditionLevelEntity extends HiveObject {
   @HiveField(30)
   String survUnitNm; // 조사단위코드명
 
-
-
   OceanRaditionLevelEntity({
     //1. 시료번호
-     required this.smpNo,
+    this.smpNo = '',
     //2. 시료수거지원코드
-    required this.gathMchnCd,
+    this.gathMchnCd = '',
     //3.시료수거지원명
-    required this.gathMchnNm,
+    this.gathMchnNm = '',
     //4. 품목코드
-    required this.itmCd,
+    this.itmCd = '',
     //5. 품목명
-    required this.itmNm,
+    this.itmNm = '',
     //6.조사점코드
-    required this.survLocCd,
+    this.survLocCd = '',
     //7. 조사점코드명
-    required this.survLocNm,
+    this.survLocNm = '',
     //8.채취일자
-    required this.gathDt,
+    this.gathDt = '',
     // 9. 원산지
-    required this.ogLoc,
+    this.ogLoc = '',
     // 10. 원산지
-    required this.analRqstDt,
+    this.analRqstDt = '',
     // 11.분석시작일자
-    required this.analStDt,
+    this.analStDt = '',
     // 12. 분석종료일자
-    required this.analEndDt,
+    this.analEndDt = '',
     //13.조사항목코드
-    required this.survCiseCd,
+    this.survCiseCd = '',
     //14.조사항목명
-    required this.survCiseNm,
+    this.survCiseNm = '',
     //15. 조사항목명 상세
-    required this.dtldSurvCiseNm,
+    this.dtldSurvCiseNm = '',
     //16. 검사종류코드
-    required this.inspKdCd,
+    this.inspKdCd = '',
     //17.검사종류명
-    required this.inspKdNm,
+    this.inspKdNm = '',
     //18.숫자분석결과값
-    required this.numAnalRsltVal,
+    this.numAnalRsltVal = '',
     //19.문자분석결과값
-    required this.charAnalRsltVal,
+    this.charAnalRsltVal = '',
     //20.문자합격값
-    required this.charPsngVal,
+    this.charPsngVal = '',
     //21.문자불합격값
-    required this.charUnPsngVal,
+    this.charUnPsngVal = '',
     //22.숫자합격최소값
-    required this.numPsngMinVal,
+    this.numPsngMinVal = '',
     //23.숫자합격최대값
-    required this.numPsngMaxVal,
+    this.numPsngMaxVal = '',
     //24.품목적합여부
-    required this.itmFtnsYn,
+    this.itmFtnsYn = '',
     //25.항목적합여부
-    required this.ciseFtnsYn,
+    this.ciseFtnsYn = '',
     //26.분석지원코드
-    required this.analMchnCd,
+    this.analMchnCd = '',
     //27.분석지원명
-    required this.analMchnNm,
+    this.analMchnNm = '',
     //28.분석결과편차
-    required this.analDevia,
+    this.analDevia = '',
     //29.MDA
-    required this.mda,
+    this.mda = '',
     //30.조사단위코드
-    required this.survUnitCd,
+    this.survUnitCd = '',
     //31.조사단위코드명
-    required this.survUnitNm,
+    this.survUnitNm = '',
   });
 }

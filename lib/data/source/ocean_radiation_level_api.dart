@@ -26,65 +26,56 @@ Future fetchXmlDataApi() async {
       var jsonData = xml2Json.toParker();
       // log('jsonData: ${jsonData.toString()}');
 
-      // final Map<String, dynamic> data = json.decode(jsonData);
-      //
-      // if (data["response"]["header"]["resultCode"] == "00") {
-      //   print('ok');
-      //   (data["response"]["body"]["items"]["item"] as List)
-      //       .forEach((element) async {
-      //     print(element["smpNo"]);
-      //     print(element["itmCd"]);
-      //     print( element["gathMchnCd"]);
-      //     print( element["gathMchnNm"]);
+      final Map<String, dynamic> data = json.decode(jsonData);
 
+      if (data["response"]["header"]["resultCode"] == "00") {
+        print('ok');
+        (data["response"]["body"]["items"]["item"] as List)
+            .forEach((element) async {
+          await OceanRaditionLevelDao()
+              .insertraditionLevel(OceanRaditionLevelEntity(
+            smpNo: element["smpNo"],
+            gathMchnCd: element["gathMchnCd"],
+            gathMchnNm: element["gathMchnNm"],
+            itmCd: element["itmCd"],
+            itmNm: element["itmNm"],
+            survLocCd: element["survLocCd"],
+            survLocNm: element["survLocNm"],
+            gathDt: element["gathDt"],
+            ogLoc: element["ogLoc"] ?? '',
+            analRqstDt: element["analRqstDt"],
+            analStDt: element["analStDt"],
+            analEndDt: element["analEndDt"],
+            survCiseCd: element["survCiseCd"],
+            survCiseNm: element["survCiseNm"],
+            dtldSurvCiseNm: element["dtldSurvCiseNm"],
+            inspKdCd: element["inspKdCd"],
+            inspKdNm: element["inspKdNm"],
+            numAnalRsltVal: element["numAnalRsltVal"] ?? '',
+            charAnalRsltVal: element["charAnalRsltVal"],
+            charPsngVal: element["charPsngVal"],
+            charUnPsngVal: element["charUnPsngVal"] ?? '',
+            numPsngMinVal: element["numPsngMinVal"],
+            numPsngMaxVal: element["numPsngMaxVal"],
+            itmFtnsYn: element["itmFtnsYn"],
+            ciseFtnsYn: element["ciseFtnsYn"],
+            analMchnCd: element["analMchnCd"],
+            analMchnNm: element["analMchnNm"],
+            analDevia: element["analDevia"] ?? '',
+            mda: element["mda"] ?? '',
+            survUnitCd: element["survUnitCd"],
+            survUnitNm: element["survUnitNm"],
+          ));
+        });
+      }
+      // // 테스트
+      OceanRaditionLevelDao().insertraditionLevel(
+        OceanRaditionLevelEntity(smpNo: '1111'),
+      );
+      OceanRaditionLevelDao().insertraditionLevel(
+          OceanRaditionLevelEntity(survCiseCd: '222'));
 
-          // 제이슨 데이터 투 스트링 이렇게 하는거 맞는교???
-         //print( jsonData.toString());
-
-      //     try {
-      //       await OceanRaditionLevelDao()
-      //           .insertradition_level(OceanRaditionLevelEntity(
-      //         smpNo: element["smpNo"]?? '',
-      //         gathMchnCd: element["gathMchnCd"] ?? '',
-      //         gathMchnNm: element["gathMchnNm"]?? '',
-      //         itmCd: element["itmCd"] ?? '',
-      //         itmNm: element["itmNm"] ?? '',
-      //         survLocCd: element["survLocCd"] ?? '',
-      //         survLocNm: element["survLocNm"] ?? '',
-      //         gathDt: element["gathDt"] ?? '',
-      //         ogLoc: element["ogLoc"] ?? '',
-      //         analRqstDt: element["analRqstDt"] ?? '',
-      //         analStDt: element["analStDt"] ?? '',
-      //         analEndDt: element["analEndDt"] ?? '',
-      //         survCiseCd: element["survCiseCd"] ?? '',
-      //         survCiseNm: element["survCiseNm"] ?? '',
-      //         dtldSurvCiseNm: element["dtldSurvCiseNm"] ?? '',
-      //         inspKdCd: element["inspKdCd"] ?? '',
-      //         inspKdNm: element["inspKdNm"] ?? '',
-      //         numAnalRsltVal: element["numAnalRsltVal"] ?? '',
-      //         charAnalRsltVal: element["charAnalRsltVal"] ?? '',
-      //         charPsngVal: element["charPsngVal"] ?? '',
-      //         charUnPsngVal: element["charUnPsngVal"] ?? '',
-      //         numPsngMinVal: element["numPsngMinVal"] ?? '',
-      //         numPsngMaxVal: element["numPsngMaxVal"] ?? '',
-      //         itmFtnsYn: element["itmFtnsYn"] ?? '',
-      //         ciseFtnsYn: element["ciseFtnsYn"] ?? '',
-      //         analMchnCd: element["analMchnCd"] ?? '',
-      //         analMchnNm: element["analMchnNm"] ?? '',
-      //         analDevia: element["analDevia"] ?? '',
-      //         mda: element["mda"] ?? '',
-      //         survUnitCd: element["survUnitCd"] ?? '',
-      //         survUnitNm: element["survUnitNm"] ?? '',
-      //
-      //       ));
-      //     } catch (e) {
-      //       log('에러!!!!!!!!!!!! $e');
-      //     }
-      //   });
-      // }
-
-
-       //log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
+      //log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
 
       // Json 데이터를 저장
       await saveJsonData(jsonData);

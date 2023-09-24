@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 import 'package:flutter_ocean_radiation_level/data/source/ocean_radiation_level_api.dart';
+import 'package:flutter_ocean_radiation_level/firebase_options.dart';
 import 'package:flutter_ocean_radiation_level/presentation/colorschemes/color_schemes.g.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'firebase_options.dart';
-
+// import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(OceanRaditionLevelEntityAdapter());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: MyHomePage(title: 'dddd',),
+      home: MyHomePage(
+        title: 'dddd',
+      ),
     );
   }
 }
@@ -51,9 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -78,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-
         onPressed: () {
           fetchXmlDataApi();
         },
@@ -91,10 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.account_circle),
             label: 'label',
           ),
-          NavigationDestination(
-              icon: Icon(Icons.tab_sharp), label: 'Text'),
-          NavigationDestination(
-              icon: Icon(Icons.back_hand), label: 'hand'),
+          NavigationDestination(icon: Icon(Icons.tab_sharp), label: 'Text'),
+          NavigationDestination(icon: Icon(Icons.back_hand), label: 'hand'),
         ],
       ),
     );
