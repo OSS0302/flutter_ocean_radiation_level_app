@@ -1,11 +1,11 @@
 
 
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
-import 'package:flutter_ocean_radiation_level/domain/model/ocean_radiation_list.dart';
+import 'package:flutter_ocean_radiation_level/domain/model/ocean_radiation_level_list.dart';
 
 extension ToOceanRadiationList on OceanRaditionLevelEntity {
-  OceanRadiationList toOceanRadiationList() {
-    return OceanRadiationList(
+  OceanRadiationLevelList toOceanRadiationList() {
+    return OceanRadiationLevelList(
       smpNo: smpNo, //1.시료번호
       gathMchnCd: gathMchnCd, //2.시료수거지원코드
       gathMchnNm: gathMchnNm, //3.시료수거지원명
@@ -42,7 +42,7 @@ extension ToOceanRadiationList on OceanRaditionLevelEntity {
   }
 }
 
-extension ToOceanRaditionLevelEntity on OceanRadiationList {
+extension ToOceanRaditionLevelEntity on OceanRadiationLevelList {
   OceanRaditionLevelEntity toOceanRaditionLevelEntity() {
     return OceanRaditionLevelEntity(
       //1.시료번호
