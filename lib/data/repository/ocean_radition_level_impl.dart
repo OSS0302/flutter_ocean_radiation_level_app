@@ -16,7 +16,7 @@ class OceanRaditionLevelImpl extends OceanRaditionLevelRepository {
       bool fetchFromRemote, String query) async {
     // 캐시에서 찾기
     final localOceanRaditionLevelListings =
-        await _dao.searchOceanRaditionLevel(query);
+        await _dao.searchRaditionLevel(query);
     // 데이터가  없다면
     final isDbEmpty = localOceanRaditionLevelListings!.isEmpty && query.isEmpty;
     // 캐쉬로 부터 로드 를 해야한다.
@@ -34,7 +34,7 @@ class OceanRaditionLevelImpl extends OceanRaditionLevelRepository {
 
 
       // 캐시 비우기
-      await _dao.clearOceanRaditionLevel();
+      await _dao.clearRaditionLevel();
       // TODO: 캐시 추가하기
 
 
