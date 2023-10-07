@@ -2,21 +2,19 @@ import 'dart:developer';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ocean_radiation_level/presentation/pags/history_screen.dart';
-import 'package:flutter_ocean_radiation_level/presentation/pags/home_screen.dart';
-import 'package:flutter_ocean_radiation_level/presentation/pags/setting_screen.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_ocean_radiation_level/presentation/pags/history/history_screen.dart';
+import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen.dart';
 
 
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class BottomNaigationBar extends StatefulWidget {
+  const BottomNaigationBar({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<BottomNaigationBar> createState() => _BottomNaigationBarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BottomNaigationBarState extends State<BottomNaigationBar> {
   /// Controller to handle PageView and also handles initial page
   final _pageController = PageController(initialPage: 0);
 
@@ -33,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// widget list
   final List<Widget> bottomBarPages = [
-      HomeScreen(),
-    const Page2(),
+      const HomeScreen(),
+    const HistoryScreen(),
     const Page3(),
 
   ];
@@ -42,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
@@ -61,27 +58,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
         /// restart app if you change removeMargins
         removeMargins: false,
-        bottomBarWidth: 700,
-        durationInMilliSeconds: 400,
+        // bottomBarWidth: MediaQuery.of(context).size.width * 0.7,
+        // 페이지 이동 시간
+        durationInMilliSeconds: 200,
         bottomBarItems: const [
            BottomBarItem(
             inActiveItem: Icon(
-              Icons.home_filled,size: 30,
+              Icons.home_filled,
+              size: 30,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
-              Icons.home_filled,size: 30,
+              Icons.home_filled,
               color: Colors.blueAccent,
             ),
             itemLabel: 'home',
           ),
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.star, size: 30,
+              Icons.star,
+              size: 30,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
-              Icons.star,size: 30,
+              Icons.star,
               color: Colors.blueAccent,
             ),
             itemLabel: 'history',
@@ -89,11 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.add_box,size: 30,
+              Icons.add_box,
+              size: 30,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
-              Icons.add_box,size: 30,
+              Icons.add_box,
               color: Colors.white,
             ),
             itemLabel: 'setting',
@@ -108,16 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
       )
           : null,
     );
-  }
-}
-
-class Page1 extends StatelessWidget {
-  const Page1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Colors.yellow, child: const Center(child: Text('Page 1')));
   }
 }
 

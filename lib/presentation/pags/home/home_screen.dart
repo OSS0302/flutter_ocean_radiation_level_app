@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ocean_radiation_level/data/source/get_one_data_from_api.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
+import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
+import 'package:flutter_ocean_radiation_level/data/source/ocean_radiation_level_api.dart';
+import 'package:flutter_ocean_radiation_level/domain/model/ocean_radiation_level_list.dart';
+import 'package:flutter_ocean_radiation_level/domain/model/ocean_radiation_level_list.dart';
 import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:animation_list/animation_list.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,9 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
-
   // final PanelController panelController = PanelController();
 
   @override
@@ -37,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OceanRaditionLevelDao? dao;
     final homeViewModel = context.watch<HomeScreenController>();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

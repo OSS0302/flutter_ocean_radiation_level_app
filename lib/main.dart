@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
-import 'package:flutter_ocean_radiation_level/data/source/ocean_radiation_level_api.dart';
 import 'package:flutter_ocean_radiation_level/firebase_options.dart';
-import 'package:flutter_ocean_radiation_level/presentation/colorschemes/color_schemes.g.dart';
+import 'package:flutter_ocean_radiation_level/presentation/common/color_schemes.g.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_ocean_radiation_level/presentation/bottom_navigation_bar.dart';
+import 'package:flutter_ocean_radiation_level/presentation/pags/history/history_screen_controller.dart';
+import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(OceanRaditionLevelEntityAdapter());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+  // runApp(const MyApp());
+  runApp( MultiProvider(
+    providers:[
+      ChangeNotifierProvider (create: (_) => HomeScreenController()),
+      ChangeNotifierProvider (create: (_) => historyScreenController()),
+    ],
+    child: const MyApp(),
+  ),
   );
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'e',
       theme: ThemeData(
         colorScheme: lightColorScheme,
         useMaterial3: true,
@@ -35,67 +48,16 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: MyHomePage(
-        title: 'dddd',
-      ),
+      home: const BottomNaigationBar(),
+      // home: MultiProvider(
+      //   providers: [
+      //     Provider<HomeScreenController>(create: (_) => HomeScreenController()),
+      //   ],
+      //   child: const MyHomePage(),
+      // ),
+
     );
+
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          fetchXmlDataApi();
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.account_circle),
-            label: 'label',
-          ),
-          NavigationDestination(icon: Icon(Icons.tab_sharp), label: 'Text'),
-          NavigationDestination(icon: Icon(Icons.back_hand), label: 'hand'),
-        ],
-      ),
-    );
-  }
-}
