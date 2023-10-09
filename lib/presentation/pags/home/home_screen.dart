@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ocean_radiation_level/data/source/get_one_data_from_api.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 import 'package:flutter_ocean_radiation_level/data/source/ocean_radiation_level_api.dart';
@@ -24,13 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Future.microtask(() {
       final homeViewModel = context.read<HomeScreenController>();
-      homeViewModel.initHome();
+      homeViewModel.initHome().then((value) {
+        setState(() {});
+      });
     });
   }
 
   @override
   void dispose() {
-    // _controller.dispose();
+    // =_controller.dispose();
     super.dispose();
   }
 
@@ -48,22 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
               fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () {
-
-            },
-            child: const Text('새로고침'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () {
-
-            },
-            child: const Text('클리어'),
-          ),
-        ],
       ),
       body: homeViewModel.isLoading
           ? const Center(
@@ -97,6 +84,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             offset: Offset(0, 3), // changes position of shadow
                           ),
                         ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            newestDateTile(title: '시료수거지원명: ', data: homeViewModel.dataApi[0].gathMchnNm),
+                            newestDateTile(title: '수거날짜: ', data: homeViewModel.dataApi[0].gathDt),
+                            newestDateTile(title: '품목명: ', data: homeViewModel.dataApi[0].itmNm),
+                            newestDateTile(title: '원산지: ', data: homeViewModel.dataApi[0].ogLoc),
+                            newestDateTile(title: '분석의뢰일자: ', data: homeViewModel.dataApi[0].analRqstDt),
+                            newestDateTile(title: '분석시작일자: ', data: homeViewModel.dataApi[0].analStDt),
+                            newestDateTile(title: '분석종료일자: ', data: homeViewModel.dataApi[0].analEndDt),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -176,6 +178,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget newestDateTile({required String title, required String data}){
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+              title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+              data,
+            style: const TextStyle(fontSize: 16),
+          ),
+        )
+      ],
     );
   }
 }
