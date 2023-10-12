@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 
 import 'package:flutter_ocean_radiation_level/presentation/pags/history/history_screen_controller.dart';
+import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:animation_list/animation_list.dart';
@@ -20,21 +23,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     Future.microtask(() {
       final historyViewModel = context.read<historyScreenController>();
-      historyViewModel.initHistory();
+      historyViewModel.initHistory().then((value) {
+        setState(() {});
+      });
     });
   }
 
-
   @override
   void dispose() {
-    //AnimationController.dispose();
+    //historyScreenController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final historyViewModel = context.watch<historyScreenController>();
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -45,82 +48,76 @@ class _HistoryScreenState extends State<HistoryScreen> {
               fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () {
-
-            },
-            child: const Text('새로고침'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () {
-
-            },
-            child: const Text('클리어'),
-          ),
-        ],
       ),
       body: historyViewModel.isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : SlidingUpPanel(
-        controller: historyViewModel.panelController,
-        maxHeight: MediaQuery.of(context).size.height * 0.9,
-        minHeight: 0,
-        // minHeight: MediaQuery.of(context).size.height * 0.3,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-        backdropEnabled: true,
-        panel: _floatingPanel(),
-        // collapsed: _floatingCollapsed(),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(10.0)), // 검색창 모서리 각도 10 둥글게 한다.
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      // fecth 로직이 Future이기 떄문에 async 사용한다.
-                    },
-                    icon: const Icon(Icons.search),
-                  ),
-                ),
+              controller: historyViewModel.panelController,
+              maxHeight: MediaQuery.of(context).size.height * 0.9,
+              minHeight: 0,
+              // minHeight: MediaQuery.of(context).size.height * 0.3,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
               ),
-            ),
+              backdropEnabled: true,
+              panel: _floatingPanel(),
+              // collapsed: _floatingCollapsed(),
+              body: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
+                      ],
+                      controller: historyViewModel.searchController,
 
-            Expanded(
-              child: Center(
-                child: AnimationList(
-                    duration: 2000,
-                    reBounceDepth: 30,
-                    children: historyViewModel.data.map((item) {
-                      return _buildTile(
-                          item['title'], item['backgroundColor']);
-                    }).toList()),
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(10.0)), // 검색창 모서리 각도 10 둥글게 한다.
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                          },
+                          icon: const Icon(Icons.search),
+                        ),
+                      ),
+                      onChanged: (String? value){
+                        print('onChanged value: 는 $value');
+                        setState(() {
+                          historyViewModel.filteredDate(value);
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: historyViewModel.dataApiFilter.isNotEmpty ? AnimationList(
+                          duration: 2000,
+                          reBounceDepth: 30,
+                          children: historyViewModel.dataApiFilter.map((item) {
+                            return _buildTile(
+                              data: item,
+                                title: item.itmNm);
+                          }).toList()) : Container(),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
       backgroundColor: Colors.white,
     );
   }
 
-  Widget _buildTile(String? title, Color? backgroundColor) {
+  Widget _buildTile({required OceanRaditionLevelEntity data, required String title, Color? backgroundColor = Colors.blue}) {
     final historyViewModel = context.watch<historyScreenController>();
     return InkWell(
       onTap: () {
         print('title: $title');
-        historyViewModel.openPanel(title: title ?? '');
+        historyViewModel.openPanel(data: data);
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.1,
@@ -129,15 +126,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
           borderRadius: BorderRadius.all(Radius.circular(25)),
           color: backgroundColor,
         ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              title ?? '',
-              style: TextStyle(fontSize: 24),
+        child: Row(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  title ?? '',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
             ),
-          ),
+            Align(
+              alignment: Alignment.center,
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.star,color: Colors.white,),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -145,34 +153,76 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _floatingPanel() {
     final historyViewModel = context.watch<historyScreenController>();
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-                height: 10,
-                width: 100,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onBackground
-                      .withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(50),
-                )),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              historyViewModel.panelBodyText,
-              style: TextStyle(fontSize: 16),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+              height: 10,
+              width: 100,
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onBackground
+                    .withOpacity(0.6),
+                borderRadius: BorderRadius.circular(50),
+              )),
+        ),
+        Flexible(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                   // historyViewModel.dataApi.toString(),
+                    historyViewModel.selectedData != null
+                        ? '시료번호 :${historyViewModel.selectedData!.smpNo} \n'
+                           '시료수거지원코드 :${historyViewModel.selectedData!.gathMchnCd} \n'
+                           '시료수거지원명 :${historyViewModel.selectedData!.gathMchnNm} \n'
+                           '품목코드 :${historyViewModel.selectedData!.itmCd} \n'
+                           '품목명 :${historyViewModel.selectedData!.itmNm} \n'
+                           '조사점코드 :${historyViewModel.selectedData!.survLocCd} \n'
+                           '조사점코드명 :${historyViewModel.selectedData!.survLocNm} \n'
+                           '채취일자 :${historyViewModel.selectedData!.gathDt} \n'
+                           '원산지 :${historyViewModel.selectedData!.ogLoc} \n'
+                           '분석의뢰일자 :${historyViewModel.selectedData!.analRqstDt} \n'
+                           '분석시작일자 :${historyViewModel.selectedData!.analStDt} \n'
+                           '분석종료일자 :${historyViewModel.selectedData!.analEndDt} \n'
+                           '조사항목코드 :${historyViewModel.selectedData!.survCiseCd} \n'
+                           '조사항목명 :${historyViewModel.selectedData!.survCiseNm} \n'
+                           '조사항목명 상세 :${historyViewModel.selectedData!.dtldSurvCiseNm} \n'
+                            '검사종류코드: ${historyViewModel.selectedData!.inspKdCd} \n'
+                            '검사종류명: ${historyViewModel.selectedData!.inspKdNm}\n'
+                            '숫자분석결과값: ${historyViewModel.selectedData!.numAnalRsltVal}\n'
+                            '문자분석결과값: ${historyViewModel.selectedData!.charAnalRsltVal}\n'
+                            '문자합격값: ${historyViewModel.selectedData!.charPsngVal}\n'
+                            '문자불합격값: ${historyViewModel.selectedData!.charUnPsngVal}\n'
+                            '숫자합격최소값: ${historyViewModel.selectedData!.numPsngMinVal}\n'
+                            '숫자합격최대값: ${historyViewModel.selectedData!.numPsngMaxVal}\n'
+                            '품목적합여부: ${historyViewModel.selectedData!.itmFtnsYn}\n'
+                            '항목적합여부: ${historyViewModel.selectedData!.ciseFtnsYn}\n'
+                            '분석지원코드: ${historyViewModel.selectedData!.analMchnCd}\n'
+                            '분석지원명: ${historyViewModel.selectedData!.analMchnNm}\n'
+                            '분석결과편차: ${historyViewModel.selectedData!.analDevia}\n'
+                            'MDA: ${historyViewModel.selectedData!.mda}\n'
+                            '조사단위코드: ${historyViewModel.selectedData!.survUnitCd}\n'
+                            '조사단위코드명: ${historyViewModel.selectedData!.survUnitNm}\n'
+                        : '없음',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 200,
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
