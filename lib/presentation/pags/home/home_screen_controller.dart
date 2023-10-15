@@ -5,14 +5,17 @@ import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 
 import 'package:flutter_ocean_radiation_level/presentation/common/string_info_for_nuclear.dart';
+import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomeScreenController extends ChangeNotifier {
   final PanelController panelController = PanelController();
   String panelBodyText = nuclearInfo;
   final OceanRaditionLevelDao dao = OceanRaditionLevelDao();
-
+  OceanRaditionLevelEntity? selectedData;
+  List<OceanRaditionLevelEntity> dataApiFilter = [];
   List<OceanRaditionLevelEntity> dataApi = [];
+  TextEditingController textEditingController = TextEditingController();
 
   bool _isLoading = true;
 
@@ -35,10 +38,14 @@ class HomeScreenController extends ChangeNotifier {
 
   /// TODO: 리스트 최근 첫번째 데이터 받아와서 저장후 뿌려주기
   Future<void> initHome() async {
-    await getOneDataFromApi(startDate: '20231006', endDate: '20231006')
+    await getOneDataFromApi(
+        //startDate: DateFormat('yyyyMMdd').format(DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day -1)),
+        startDate: DateFormat('yyyyMMdd').format(DateTime(DateTime.now().year, DateTime.now().month-1 ,DateTime.now().day )),
+        endDate: DateFormat('yyyyMMdd').format(DateTime.now()))
         .then((value) {
       if (value.isNotEmpty) {
         dataApi.addAll(value);
+        selectedData = value[0];
       }
     });
 
@@ -48,10 +55,10 @@ class HomeScreenController extends ChangeNotifier {
   }
 
   Future<void> openPanel({required String title}) async {
-    if (title.contains('영향')) {
+    if (title.contains('인체')) {
       panelBodyText = nuclearAffectT;
       notifyListeners();
-    } else if (title.contains('수치')) {
+    } else if (title.contains('검사 수치')) {
       panelBodyText = nuclearChart;
       notifyListeners();
     } else {
