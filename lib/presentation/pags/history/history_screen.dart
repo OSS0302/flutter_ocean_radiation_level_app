@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
-
 import 'package:flutter_ocean_radiation_level/presentation/pags/history/history_screen_controller.dart';
-import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:animation_list/animation_list.dart';
@@ -15,12 +13,17 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  // final PanelController panelController = PanelController();
+class _HistoryScreenState extends State<HistoryScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+      length: 2,
+      vsync: this, //vsync에 this 형태로 전달해야 애니메이션이 정상 처리됨
+    );
     Future.microtask(() {
       final historyViewModel = context.read<historyScreenController>();
       historyViewModel.initHistory().then((value) {
@@ -31,7 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   void dispose() {
-    //historyScreenController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -45,9 +48,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
         title: const Text(
           '히스토리화면 ',
           style: TextStyle(
-              fontSize: 40, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 40, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        bottom:  TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(child: Text('main')),
+            Tab(child: Text('Favorites')),
+          ],
+        ),
       ),
       body: historyViewModel.isLoading
           ? const Center(
@@ -64,55 +73,68 @@ class _HistoryScreenState extends State<HistoryScreen> {
               backdropEnabled: true,
               panel: _floatingPanel(),
               // collapsed: _floatingCollapsed(),
-              body: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
-                      ],
-                      controller: historyViewModel.searchController,
-
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10.0)), // 검색창 모서리 각도 10 둥글게 한다.
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () async {
+              body: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
+                          ],
+                          controller: historyViewModel.searchController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  10.0)), // 검색창 모서리 각도 10 둥글게 한다.
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () async {},
+                              icon: const Icon(Icons.search),
+                            ),
+                          ),
+                          onChanged: (String? value) {
+                            print('onChanged value: 는 $value');
+                            setState(() {
+                              historyViewModel.filteredDate(value);
+                            });
                           },
-                          icon: const Icon(Icons.search),
                         ),
                       ),
-                      onChanged: (String? value){
-                        print('onChanged value: 는 $value');
-                        setState(() {
-                          historyViewModel.filteredDate(value);
-                        });
-                      },
-                    ),
+                      Expanded(
+                        child: Center(
+                          child: historyViewModel.dataApiFilter.isNotEmpty
+                              ? AnimationList(
+                                  duration: 2000,
+                                  reBounceDepth: 30,
+                                  children: historyViewModel.dataApiFilter
+                                      .map((item) {
+                                    return _buildTile(
+                                        data: item, title: item.itmNm);
+                                  }).toList())
+                              : Container(),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: Center(
-                      child: historyViewModel.dataApiFilter.isNotEmpty ? AnimationList(
-                          duration: 2000,
-                          reBounceDepth: 30,
-                          children: historyViewModel.dataApiFilter.map((item) {
-                            return _buildTile(
-                              data: item,
-                                title: item.itmNm);
-                          }).toList()) : Container(),
-                    ),
-                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  )
                 ],
               ),
             ),
-      backgroundColor: Colors.white,
     );
   }
 
-  Widget _buildTile({required OceanRaditionLevelEntity data, required String title, Color? backgroundColor = Colors.blue}) {
+  Widget _buildTile(
+      {required OceanRaditionLevelEntity data,
+      required String title,
+
+      Color? backgroundColor = Colors.orange}) {
     final historyViewModel = context.watch<historyScreenController>();
     return InkWell(
       onTap: () {
@@ -138,13 +160,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.star,color: Colors.white,),
-              ),
-            ),
+           Text('채취일자: ${data.gathDt}')
           ],
         ),
       ),
@@ -163,10 +179,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               height: 10,
               width: 100,
               decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onBackground
-                    .withOpacity(0.6),
+                color:Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(50),
               )),
         ),
@@ -178,23 +191,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
               child: Column(
                 children: [
                   Text(
-                   // historyViewModel.dataApi.toString(),
+                    // historyViewModel.dataApi.toString(),
                     historyViewModel.selectedData != null
                         ? '시료번호 :${historyViewModel.selectedData!.smpNo} \n'
-                           '시료수거지원코드 :${historyViewModel.selectedData!.gathMchnCd} \n'
-                           '시료수거지원명 :${historyViewModel.selectedData!.gathMchnNm} \n'
-                           '품목코드 :${historyViewModel.selectedData!.itmCd} \n'
-                           '품목명 :${historyViewModel.selectedData!.itmNm} \n'
-                           '조사점코드 :${historyViewModel.selectedData!.survLocCd} \n'
-                           '조사점코드명 :${historyViewModel.selectedData!.survLocNm} \n'
-                           '채취일자 :${historyViewModel.selectedData!.gathDt} \n'
-                           '원산지 :${historyViewModel.selectedData!.ogLoc} \n'
-                           '분석의뢰일자 :${historyViewModel.selectedData!.analRqstDt} \n'
-                           '분석시작일자 :${historyViewModel.selectedData!.analStDt} \n'
-                           '분석종료일자 :${historyViewModel.selectedData!.analEndDt} \n'
-                           '조사항목코드 :${historyViewModel.selectedData!.survCiseCd} \n'
-                           '조사항목명 :${historyViewModel.selectedData!.survCiseNm} \n'
-                           '조사항목명 상세 :${historyViewModel.selectedData!.dtldSurvCiseNm} \n'
+                            '시료수거지원코드 :${historyViewModel.selectedData!.gathMchnCd} \n'
+                            '시료수거지원명 :${historyViewModel.selectedData!.gathMchnNm} \n'
+                            '품목코드 :${historyViewModel.selectedData!.itmCd} \n'
+                            '품목명 :${historyViewModel.selectedData!.itmNm} \n'
+                            '조사점코드 :${historyViewModel.selectedData!.survLocCd} \n'
+                            '조사점코드명 :${historyViewModel.selectedData!.survLocNm} \n'
+                            '채취일자 :${historyViewModel.selectedData!.gathDt} \n'
+                            '원산지 :${historyViewModel.selectedData!.ogLoc} \n'
+                            '분석의뢰일자 :${historyViewModel.selectedData!.analRqstDt} \n'
+                            '분석시작일자 :${historyViewModel.selectedData!.analStDt} \n'
+                            '분석종료일자 :${historyViewModel.selectedData!.analEndDt} \n'
+                            '조사항목코드 :${historyViewModel.selectedData!.survCiseCd} \n'
+                            '조사항목명 :${historyViewModel.selectedData!.survCiseNm} \n'
+                            '조사항목명 상세 :${historyViewModel.selectedData!.dtldSurvCiseNm} \n'
                             '검사종류코드: ${historyViewModel.selectedData!.inspKdCd} \n'
                             '검사종류명: ${historyViewModel.selectedData!.inspKdNm}\n'
                             '숫자분석결과값: ${historyViewModel.selectedData!.numAnalRsltVal}\n'
@@ -212,7 +225,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             '조사단위코드: ${historyViewModel.selectedData!.survUnitCd}\n'
                             '조사단위코드명: ${historyViewModel.selectedData!.survUnitNm}\n'
                         : '없음',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16,color: Colors.black),
                   ),
                   SizedBox(
                     height: 200,
