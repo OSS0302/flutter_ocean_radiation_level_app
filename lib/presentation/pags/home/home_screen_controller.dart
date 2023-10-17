@@ -44,6 +44,7 @@ class HomeScreenController extends ChangeNotifier {
         endDate: DateFormat('yyyyMMdd').format(DateTime.now()))
         .then((value) {
       if (value.isNotEmpty) {
+        value.sort((a, b) => b.gathDt.compareTo(a.gathDt));
         dataApi.addAll(value);
         selectedData = value[0];
       }
