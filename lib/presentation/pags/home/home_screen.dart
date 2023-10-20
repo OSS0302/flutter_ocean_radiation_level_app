@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:animation_list/animation_list.dart';
@@ -129,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTile(String? title,{ Color?backgroundColor = Colors.blueAccent} ) {
+  Widget _buildTile(String? title,{ Color?backgroundColor = Colors.orangeAccent} ) {
     final homeViewModel = context.watch<HomeScreenController>();
     return InkWell(
       onTap: () {
@@ -222,7 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
             style: const TextStyle(fontSize: 16),
           ),
         )
-
       ],
     );
   }
