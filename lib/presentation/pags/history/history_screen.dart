@@ -47,14 +47,13 @@ class _HistoryScreenState extends State<HistoryScreen>
         centerTitle: false,
         title: const Text(
           '히스토리화면 ',
-          style: TextStyle(
-              fontSize: 40, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
-        bottom:  TabBar(
+        bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(child: Text('main')),
-            Tab(child: Text('Favorites')),
+            Tab(child: Text('메인')),
+            Tab(child: Text('즐겨찾기')),
           ],
         ),
       ),
@@ -63,6 +62,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               child: CircularProgressIndicator(),
             )
           : SlidingUpPanel(
+              color: Theme.of(context).colorScheme.background,
               controller: historyViewModel.panelController,
               maxHeight: MediaQuery.of(context).size.height * 0.9,
               minHeight: 0,
@@ -133,7 +133,6 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget _buildTile(
       {required OceanRaditionLevelEntity data,
       required String title,
-
       Color? backgroundColor = Colors.orange}) {
     final historyViewModel = context.watch<historyScreenController>();
     return InkWell(
@@ -156,11 +155,17 @@ class _HistoryScreenState extends State<HistoryScreen>
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
                   title ?? '',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-           Text('채취일자: ${data.gathDt}')
+            Text('채취일자: ${data.gathDt}'),
+            IconButton(
+              alignment: Alignment.topRight,
+              onPressed: () {
+              },
+              icon: Icon(Icons.star_border_outlined),
+            ),
           ],
         ),
       ),
@@ -179,7 +184,8 @@ class _HistoryScreenState extends State<HistoryScreen>
               height: 10,
               width: 100,
               decoration: BoxDecoration(
-                color:Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(50),
               )),
         ),
@@ -225,7 +231,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                             '조사단위코드: ${historyViewModel.selectedData!.survUnitCd}\n'
                             '조사단위코드명: ${historyViewModel.selectedData!.survUnitNm}\n'
                         : '없음',
-                    style: TextStyle(fontSize: 16,color: Colors.black),
                   ),
                   SizedBox(
                     height: 200,
