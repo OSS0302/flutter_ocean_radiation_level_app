@@ -9,6 +9,7 @@ import 'package:animation_list/animation_list.dart';
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
 
+
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
@@ -16,10 +17,12 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  final _focusNode = FocusScopeNode();
 
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(
       length: 2,
       vsync: this, //vsync에 this 형태로 전달해야 애니메이션이 정상 처리됨
@@ -35,98 +38,105 @@ class _HistoryScreenState extends State<HistoryScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final historyViewModel = context.watch<historyScreenController>();
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: false,
-        title: const Text(
-          '히스토리화면 ',
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+    return FocusScope(
+      node: _focusNode,
+      child: Scaffold(
+        // resizeToAvoidBottomInset : false,
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: false,
+          title: const Text(
+            '히스토리화면 ',
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          ),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: [
+              Tab(child: Text('메인')),
+              Tab(child: Text('즐겨찾기')),
+            ],
+          ),
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(child: Text('메인')),
-            Tab(child: Text('즐겨찾기')),
-          ],
-        ),
-      ),
-      body: historyViewModel.isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SlidingUpPanel(
-              color: Theme.of(context).colorScheme.background,
-              controller: historyViewModel.panelController,
-              maxHeight: MediaQuery.of(context).size.height * 0.9,
-              minHeight: 0,
-              // minHeight: MediaQuery.of(context).size.height * 0.3,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
-              backdropEnabled: true,
-              panel: _floatingPanel(),
-              // collapsed: _floatingCollapsed(),
-              body: TabBarView(
-                controller: _tabController,
-                children: <Widget>[
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: TextFormField(
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
-                          ],
-                          controller: historyViewModel.searchController,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  10.0)), // 검색창 모서리 각도 10 둥글게 한다.
+        body: historyViewModel.isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : SlidingUpPanel(
+                color: Theme.of(context).colorScheme.background,
+                controller: historyViewModel.panelController,
+                maxHeight: MediaQuery.of(context).size.height * 0.9,
+                minHeight: 0,
+                // minHeight: MediaQuery.of(context).size.height * 0.3,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+                backdropEnabled: true,
+                panel: _floatingPanel(),
+                // collapsed: _floatingCollapsed(),
+                body: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: TextField(
+                              enableInteractiveSelection: false,
+                            focusNode: widget.textFocus,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
+                            ],
+                            controller: historyViewModel.searchController,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // 검색창 모서리 각도 10 둥글게 한다.
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () async {},
+                                icon: const Icon(Icons.search),
+                              ),
                             ),
-                            suffixIcon: IconButton(
-                              onPressed: () async {},
-                              icon: const Icon(Icons.search),
-                            ),
+                            onChanged: (String? value) {
+                              print('onChanged value: 는 $value');
+                              setState(() {
+                                historyViewModel.filteredDate(value);
+                              });
+                            },
                           ),
-                          onChanged: (String? value) {
-                            print('onChanged value: 는 $value');
-                            setState(() {
-                              historyViewModel.filteredDate(value);
-                            });
-                          },
                         ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: historyViewModel.dataApiFilter.isNotEmpty
-                              ? AnimationList(
-                                  duration: 2000,
-                                  reBounceDepth: 30,
-                                  children: historyViewModel.dataApiFilter
-                                      .map((item) {
-                                    return _buildTile(
-                                        data: item, title: item.itmNm);
-                                  }).toList())
-                              : Container(),
+                        Expanded(
+                          child: Center(
+                            child: historyViewModel.dataApiFilter.isNotEmpty
+                                ? AnimationList(
+                                    duration: 2000,
+                                    reBounceDepth: 30,
+                                    children: historyViewModel.dataApiFilter
+                                        .map((item) {
+                                      return _buildTile(
+                                          data: item, title: item.itmNm);
+                                    }).toList())
+                                : Container(),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                  )
-                ],
+                      ],
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    )
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -137,7 +147,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     final historyViewModel = context.watch<historyScreenController>();
     return InkWell(
       onTap: () {
-        print('title: $title');
+        //print('title: $title');
         historyViewModel.openPanel(data: data);
       },
       child: Container(
