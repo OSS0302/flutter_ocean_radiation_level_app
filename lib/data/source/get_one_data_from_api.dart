@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_ocean_radiation_level/data/keys.dart';
+import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml2json/xml2json.dart';
 
 Future<List<OceanRaditionLevelEntity>> getOneDataFromApi(
@@ -71,8 +71,8 @@ Future<List<OceanRaditionLevelEntity>> getOneDataFromApi(
       }
 
       // 테스트
-      //List<OceanRaditionLevelEntity > DatalistResult= await getOneDataFromApi( startDate: '20230912', endDate: '20230913'.toString());
-      //List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
+      // List<OceanRaditionLevelEntity > DatalistResult= await getOneDataFromApi( startDate: '20230912', endDate: '20230913'.toString());
+      // List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
 
       log('????');
       log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
