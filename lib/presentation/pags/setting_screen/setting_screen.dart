@@ -26,14 +26,13 @@ class _SettingScreenState extends State<SettingScreen> {
     final SettingViewModel = context.watch<SettingScreenController>();
     return Scaffold(
       appBar: AppBar(
-      elevation: 0,
-      centerTitle: false,
-      title: const Text(
-        '히스토리화면 ',
-        style: TextStyle(
-            fontSize: 40, fontWeight: FontWeight.bold ),
+        elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          '설정화면',
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        ),
       ),
-    ),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -41,31 +40,23 @@ class _SettingScreenState extends State<SettingScreen> {
           children: [
             const Padding(
               padding: EdgeInsets.all(10),
-              child: Text("테마 변경",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+              child: Text(
+                "타크 모드",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
             ),
             Switch(
               value: _isLightMode,
               onChanged: (val) {
                 setState(() {
                   _isLightMode = val;
+                  MyApp.themeNotifier.value =
+                      MyApp.themeNotifier.value == ThemeMode.light
+                          ? ThemeMode.dark
+                          : ThemeMode.light;
                 });
-                MyApp.themeNotifier.value =
-                    MyApp.themeNotifier.value == ThemeMode.light
-                        ? ThemeMode.dark
-                        : ThemeMode.light;
               },
             ),
-                const Text(
-                  'Dark Mode',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Switch(
-                  value: controller.value,
-                  onChanged: (bool value) {
-                    controller.setMode(value);
-                  },
-                ),
-
           ],
         ),
       ),

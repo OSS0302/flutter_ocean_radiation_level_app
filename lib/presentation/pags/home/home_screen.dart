@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ocean_radiation_level/presentation/common/string_info_for_nuclear.dart';
 import 'package:flutter_ocean_radiation_level/presentation/pags/home/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context  ) {
+  Widget build(BuildContext context) {
     final homeViewModel = context.watch<HomeScreenController>();
     return Scaffold(
       appBar: AppBar(
@@ -40,8 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         title: const Text(
           '홈화면',
-          style: TextStyle(
-              fontSize: 40, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
         // backgroundColor: Colors.white,
       ),
@@ -77,7 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -86,37 +87,51 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              newestDateTile(title: '시료수거지원명: ', data: homeViewModel.dataApi[0].gathMchnNm),
-                              newestDateTile(title: '채취일자 : ', data: homeViewModel.dataApi[0].gathDt),
-                              newestDateTile(title: '품목명: ', data: homeViewModel.dataApi[0].itmNm),
-                              newestDateTile(title: '원산지: ', data: homeViewModel.dataApi[0].ogLoc),
-                              newestDateTile(title: '분석의뢰일자: ', data: homeViewModel.dataApi[0].analRqstDt),
-                              newestDateTile(title: '분석시작일자: ', data: homeViewModel.dataApi[0].analStDt),
-                              newestDateTile(title: '분석종료일자: ', data: homeViewModel.dataApi[0].analEndDt),
+                              newestDateTile(
+                                  title: '시료수거지원명: ',
+                                  data: homeViewModel.dataApi[0].gathMchnNm),
+                              newestDateTile(
+                                  title: '채취일자 : ',
+                                  data: homeViewModel.dataApi[0].gathDt),
+                              newestDateTile(
+                                  title: '품목명: ',
+                                  data: homeViewModel.dataApi[0].itmNm),
+                              newestDateTile(
+                                  title: '원산지: ',
+                                  data: homeViewModel.dataApi[0].ogLoc),
+                              newestDateTile(
+                                  title: '분석의뢰일자: ',
+                                  data: homeViewModel.dataApi[0].analRqstDt),
+                              newestDateTile(
+                                  title: '분석시작일자: ',
+                                  data: homeViewModel.dataApi[0].analStDt),
+                              newestDateTile(
+                                  title: '분석종료일자: ',
+                                  data: homeViewModel.dataApi[0].analEndDt),
                             ],
                           ),
                         ),
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
                       child: Text(
-                          'data가 없는날도 있어서 한달치를 가져오도록 했습니다.',
-                          style: TextStyle(
-                            color: Colors.grey,
-                              fontSize: 16,
-                          ),
+                        'data가 없는날도 있어서 한달치를 가져오도록 했습니다.',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                     Expanded(
                       child: Center(
                         child: AnimationList(
-                          physics: const NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             duration: 2000,
                             reBounceDepth: 30,
                             children: homeViewModel.data.map((item) {
-                              return _buildTile(
-                                  item['title']);
+                              return _buildTile(item['title']);
                             }).toList()),
                       ),
                     ),
@@ -128,12 +143,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTile(String? title,{ Color?backgroundColor = Colors.orangeAccent} ) {
+  Widget _buildTile(String? title,
+      {Color? backgroundColor = Colors.orangeAccent}) {
     final homeViewModel = context.watch<HomeScreenController>();
     return InkWell(
       onTap: () {
-        print('title: $title');
-        homeViewModel.openPanel(title: title ?? '');
+        setState(() {
+          homeViewModel.openPanel(title: title ?? '', dataTable: dataTable);
+        });
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.1,
@@ -149,9 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               title ?? '',
               style: const TextStyle(
-                  fontSize: 24,
-                  color: Colors.black,
-                  // color: context.isDarkMode ? Colors.red : Colors.blue,
+                fontSize: 24,
+                color: Colors.black,
+                // color: context.isDarkMode ? Colors.red : Colors.blue,
               ),
             ),
           ),
@@ -163,61 +180,60 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _floatingPanel() {
     final homeViewModel = context.watch<HomeScreenController>();
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-                height: 10,
-                width: 100,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onBackground
-                      .withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(50),
-                )),
-          ),
-          Flexible(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(
-                      homeViewModel.panelBodyText,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 200,
-                    ),
-                  ],
-                ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+              height: 10,
+              width: 100,
+              decoration: BoxDecoration(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(50),
+              )),
+        ),
+        Flexible(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  homeViewModel.panelTitle.contains('검사 수치')
+                      ? SizedBox(child: homeViewModel.Table)
+                      : Text(
+                    homeViewModel.panelBodyText,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  // SizedBox(child: homeViewModel.Table),
+                  SizedBox(
+                    height: 200,
+                  ),
+                ],
               ),
             ),
           ),
-
-        ],
-
+        ),
+      ],
     );
   }
 
-  Widget newestDateTile({required String title, required String data}){
+  Widget newestDateTile({required String title, required String data}) {
     return Row(
       children: [
         Expanded(
           flex: 1,
           child: Text(
-              title,
+            title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
         Expanded(
           flex: 1,
           child: Text(
-              data,
+            data,
             style: const TextStyle(fontSize: 16),
           ),
         )

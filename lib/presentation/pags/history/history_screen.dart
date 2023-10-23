@@ -89,7 +89,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                           padding: const EdgeInsets.all(16.0),
                           child: TextField(
                               enableInteractiveSelection: false,
-                            focusNode: widget.textFocus,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
                                   RegExp(r'[a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]'))
