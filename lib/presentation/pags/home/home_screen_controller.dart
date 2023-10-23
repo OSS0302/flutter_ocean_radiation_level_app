@@ -44,14 +44,14 @@ class HomeScreenController extends ChangeNotifier {
   /// TODO: 리스트 최근 첫번째 데이터 받아와서 저장후 뿌려주기
   Future<void> initHome() async {
     await getOneDataFromApi(
-        //startDate: DateFormat('yyyyMMdd').format(DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day -1)),
-        startDate: DateFormat('yyyyMMdd').format(DateTime(DateTime.now().year, DateTime.now().month-1 ,DateTime.now().day )),
+        startDate: DateFormat('yyyyMMdd').format(DateTime(DateTime.now().year, DateTime.now().month-1 , DateTime.now().day)),
         endDate: DateFormat('yyyyMMdd').format(DateTime.now()))
         .then((value) {
       if (value.isNotEmpty) {
         value.sort((a, b) => b.gathDt.compareTo(a.gathDt));
-        dataApi.addAll(value);
+       dataApi.addAll(value);
         selectedData = value[0];
+
       }
     });
 

@@ -121,9 +121,9 @@ class OceanRaditionLevelApi {
           });
         }
        // 테스트
-        List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
+        //List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
 
-        log('dataT ${dataT.length}, smpNo: ${dataT[0].smpNo}');
+        //log('dataT ${dataT.length}, smpNo: ${dataT[0].smpNo}');
        // log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
 
 
