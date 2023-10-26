@@ -15,92 +15,83 @@ String nuclearAffectT = "방사선이 인체에 미치는 영향\n 올해는 후
 
 String nuclearChartTitle = "검사 수치로 보는 영향 ";
 
-String nuclearChart =
 
-    "0.05mSv(밀리시버트) : 흉부 x선 촬영시 노출량 \n"
-    "0.19mSv(밀리시버트) : 도쿄에서 뉴욕까지 왕복으로 비행시 노출량 \n"
-    "0.6mSv(밀리시버트) : 복부 x선 촬영시 노출량 \n"
-    "1.0mSv(밀리시버트) : 일상생활에서 일반인의 연간 노출 한도 \n"
-    "2.4mSv(밀리시버트) : 일상생활에서의 연간 노출량 \n"
-    "50 mSv(밀리시버트) : 방사선 관련 직종자의 연간 노출 한도 \n"
-    "100mSv(밀리시버트) : 즉각적인 건강에 영향은 없지만 향후 암 방별률 0.5% 일반인에 비해 높다. \n"
-    "400mSv(밀리시버트) : 15일 오전 후쿠시마 원전 3호기 주변 에서의 검출량 \n"
-    "500mSv(밀리시버트) : 림프구 감소 \n"
-    "1000mSv(밀리시버트) : 10명중에 1명이 구토나 나른한 느낌 \n"
-    "4000mSv(밀리시버트) : 30일 이내 에 약 50% 의 피폭자 사망 \n";
-String test  = "피폭량";
 
 DataTable dataTable =
 DataTable(
+  border: TableBorder.all(),
+  dataRowMaxHeight: double.infinity,
+  horizontalMargin:12 ,
   columnSpacing: 10,
   columns: const [
-    DataColumn(label: Text('방사능량')),
-    DataColumn(label: Text('피폭량에 따른 신체에 미치는 영향')),
+    DataColumn(label: Text('방사능량',style: TextStyle(fontSize: 18),)),
+    DataColumn(label: Text('피폭량에 따른 신체에 미치는 영향',style: TextStyle(fontSize: 17.5))),
   ],
   rows: const [
     DataRow(
         cells: [
-          DataCell(Text('0.05mSv(밀리시버트)')),
+          DataCell(Text('0.05mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('흉부 x선 촬영시 노출량')),
+
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('0.19mSv(밀리시버트)')),
+          DataCell(Text('0.19mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('도쿄에서 뉴욕까지 왕복으로 비행시 노출량')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('0.6mSv(밀리시버트)')),
+          DataCell(Text('0.6mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('복부 x선 촬영시 노출량')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('1.0mSv(밀리시버트)')),
+          DataCell(Text('1.0mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('일상생활에서 일반인의 연간 노출 한도')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('2.4mSv(밀리시버트)')),
+          DataCell(Text('2.4mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('일상생활에서의 연간 노출량')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('50 mSv(밀리시버트)')),
+          DataCell(Text('50 mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('방사선 관련 직종자의 연간 노출 한도')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('100mSv(밀리시버트)')),
+          DataCell(Text('100mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('즉각적인 건강에 영향은 없지만 향후 암 방별률 0.5% 일반인에 비해 높다.')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('400mSv(밀리시버트)')),
+          DataCell(Text('400mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('15일 오전 후쿠시마 원전 3호기 주변 에서의 검출량')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('500mSv(밀리시버트)')),
+          DataCell(Text('500mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('림프구 감소')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('1000mSv(밀리시버트)')),
+          DataCell(Text('1000mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('10명중에 1명이 구토나 나른한 느낌')),
         ]
     ),
     DataRow(
         cells: [
-          DataCell(Text('4000mSv(밀리시버트)')),
+          DataCell(Text('4000mSv\n(밀리시버트)',style: TextStyle(fontSize: 12),)),
           DataCell(Text('30일 이내 에 약 50% 의 피폭자 사망')),
         ]
     ),
