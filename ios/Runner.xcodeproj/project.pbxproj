@@ -117,6 +117,7 @@
 				9C8DE24605DDA782E34FE801 /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		97C146EF1CF9000F007C117D /* Products */ = {
 			isa = PBXGroup;
@@ -475,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterOceanRadiationLevel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ohsangsoo.flutterOceanRadiationLevel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -657,7 +658,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterOceanRadiationLevel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ohsangsoo.flutterOceanRadiationLevel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -680,7 +681,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterOceanRadiationLevel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ohsangsoo.flutterOceanRadiationLevel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
