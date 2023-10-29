@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
 import 'package:flutter_ocean_radiation_level/firebase_options.dart';
 import 'package:flutter_ocean_radiation_level/presentation/common/color_schemes.g.dart';
@@ -16,8 +15,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(OceanRaditionLevelEntityAdapter());
+  final db = await Hive.openBox("db");
+  final db1 = await Hive.openBox("db");
+  final db2 = await Hive.openBox("db");
+  final a = OceanRaditionLevelEntity();
+  db.put("key", a);
+  db1.put("key", a);
+  db2.put("key", a);
+
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+
   );
 
   // runApp(const MyApp());
