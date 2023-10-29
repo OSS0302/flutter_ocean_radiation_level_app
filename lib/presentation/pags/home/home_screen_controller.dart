@@ -49,8 +49,9 @@ class HomeScreenController extends ChangeNotifier {
         .then((value) {
       if (value.isNotEmpty) {
         value.sort((a, b) => b.gathDt.compareTo(a.gathDt));
-       dataApi.addAll(value);
+        dataApi.addAll(value);
         selectedData = value[0];
+
 
       }
     });
@@ -66,9 +67,6 @@ class HomeScreenController extends ChangeNotifier {
     if (panelTitle.contains('인체')) {
       panelBodyText = nuclearAffectT;
       notifyListeners();
-    } else if (panelTitle.contains('검사 수치')) {
-      panelBodyText = nuclearChart;
-      notifyListeners();
     }else if (panelTitle.contains('피폭량')) {
       Table = dataTable;
       notifyListeners();
@@ -78,7 +76,7 @@ class HomeScreenController extends ChangeNotifier {
     }
     if (panelController.isPanelClosed) {
       // pannel 을 해당되는 사이즈로 오픈
-      panelController.animatePanelToPosition(0.5);
+      panelController.animatePanelToPosition(0.55);
       // // pannel max 로 오픈
       //panelController.open();
     }

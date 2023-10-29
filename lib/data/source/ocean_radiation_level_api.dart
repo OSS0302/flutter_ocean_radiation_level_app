@@ -77,49 +77,49 @@ class OceanRaditionLevelApi {
 
         //테스트
         // // 테스트
-        OceanRaditionLevelDao().insertraditionLevel(
-          OceanRaditionLevelEntity(smpNo: '1111'),
-        );
-        if (data["response"]["header"]["resultCode"] == "00") {
-          print('hok');
-          (data["response"]["body"]["items"]["item"] as List)
-              .forEach((element) async {
-            await OceanRaditionLevelDao()
-                .getAllRaditionLevel(OceanRaditionLevelEntity(
-              smpNo: element["smpNo"],
-              gathMchnCd: element["gathMchnCd"],
-              gathMchnNm: element["gathMchnNm"],
-              itmCd: element["itmCd"],
-              itmNm: element["itmNm"],
-              survLocCd: element["survLocCd"],
-              survLocNm: element["survLocNm"],
-              gathDt: element["gathDt"],
-              ogLoc: element["ogLoc"] ?? '',
-              analRqstDt: element["analRqstDt"],
-              analStDt: element["analStDt"],
-              analEndDt: element["analEndDt"],
-              survCiseCd: element["survCiseCd"],
-              survCiseNm: element["survCiseNm"],
-              dtldSurvCiseNm: element["dtldSurvCiseNm"],
-              inspKdCd: element["inspKdCd"],
-              inspKdNm: element["inspKdNm"],
-              numAnalRsltVal: element["numAnalRsltVal"] ?? '',
-              charAnalRsltVal: element["charAnalRsltVal"],
-              charPsngVal: element["charPsngVal"],
-              charUnPsngVal: element["charUnPsngVal"] ?? '',
-              numPsngMinVal: element["numPsngMinVal"],
-              numPsngMaxVal: element["numPsngMaxVal"],
-              itmFtnsYn: element["itmFtnsYn"],
-              ciseFtnsYn: element["ciseFtnsYn"],
-              analMchnCd: element["analMchnCd"],
-              analMchnNm: element["analMchnNm"],
-              analDevia: element["analDevia"] ?? '',
-              mda: element["mda"] ?? '',
-              survUnitCd: element["survUnitCd"],
-              survUnitNm: element["survUnitNm"],
-            ));
-          });
-        }
+        // OceanRaditionLevelDao().insertraditionLevel(
+        //   OceanRaditionLevelEntity(smpNo: '1111'),
+        // );
+        // if (data["response"]["header"]["resultCode"] == "00") {
+        //   print('hok');
+        //   (data["response"]["body"]["items"]["item"] as List)
+        //       .forEach((element) async {
+        //     await OceanRaditionLevelDao()
+        //         .getAllRaditionLevel(OceanRaditionLevelEntity(
+        //       smpNo: element["smpNo"],
+        //       gathMchnCd: element["gathMchnCd"],
+        //       gathMchnNm: element["gathMchnNm"],
+        //       itmCd: element["itmCd"],
+        //       itmNm: element["itmNm"],
+        //       survLocCd: element["survLocCd"],
+        //       survLocNm: element["survLocNm"],
+        //       gathDt: element["gathDt"],
+        //       ogLoc: element["ogLoc"] ?? '',
+        //       analRqstDt: element["analRqstDt"],
+        //       analStDt: element["analStDt"],
+        //       analEndDt: element["analEndDt"],
+        //       survCiseCd: element["survCiseCd"],
+        //       survCiseNm: element["survCiseNm"],
+        //       dtldSurvCiseNm: element["dtldSurvCiseNm"],
+        //       inspKdCd: element["inspKdCd"],
+        //       inspKdNm: element["inspKdNm"],
+        //       numAnalRsltVal: element["numAnalRsltVal"] ?? '',
+        //       charAnalRsltVal: element["charAnalRsltVal"],
+        //       charPsngVal: element["charPsngVal"],
+        //       charUnPsngVal: element["charUnPsngVal"] ?? '',
+        //       numPsngMinVal: element["numPsngMinVal"],
+        //       numPsngMaxVal: element["numPsngMaxVal"],
+        //       itmFtnsYn: element["itmFtnsYn"],
+        //       ciseFtnsYn: element["ciseFtnsYn"],
+        //       analMchnCd: element["analMchnCd"],
+        //       analMchnNm: element["analMchnNm"],
+        //       analDevia: element["analDevia"] ?? '',
+        //       mda: element["mda"] ?? '',
+        //       survUnitCd: element["survUnitCd"],
+        //       survUnitNm: element["survUnitNm"],
+        //     ));
+        //   });
+        // }
        // 테스트
         //List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
 

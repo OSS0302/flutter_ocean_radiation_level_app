@@ -32,7 +32,6 @@ class OceanRaditionLevelDao {
   }
 
 
-
 // 삭제
   Future<void> deleteData(OceanRaditionLevelEntity oceanRaditionLevelIndex) async {
     final box = await Hive.openBox<OceanRaditionLevelEntity>(db);

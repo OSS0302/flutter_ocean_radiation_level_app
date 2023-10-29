@@ -89,19 +89,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               newestDateTile(
                                   title: '시료수거지원명: ',
-                                  data: homeViewModel.dataApi[0]  == homeViewModel.dataApi.length  ? '오늘 데이터가 없습니다.' : homeViewModel.dataApi[0].gathMchnNm),
+                                  data: homeViewModel.dataApi.isEmpty  == homeViewModel.dataApi.length  ? '오늘 데이터가 없습니다.' : homeViewModel.dataApi[0].gathMchnNm),
                               newestDateTile(
                                   title: '채취일자 : ',
-                                  data: homeViewModel.dataApi[0] == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.':homeViewModel.dataApi[0].gathDt ),
+                                  data: homeViewModel.dataApi.isEmpty == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.':homeViewModel.dataApi[0].gathDt ),
                               newestDateTile(
                                   title: '품목명: ',
-                                  data: homeViewModel.dataApi[0]  == homeViewModel.dataApi.length?'오늘 데이터가 없습니다.'  : homeViewModel.dataApi[0].itmNm ) ,
+                                  data: homeViewModel.dataApi.isEmpty  == homeViewModel.dataApi.length?'오늘 데이터가 없습니다.'  : homeViewModel.dataApi[0].itmNm ) ,
                               newestDateTile(
                                   title: '원산지: ',
-                                  data: homeViewModel.dataApi[0]  == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.':homeViewModel.dataApi[0].ogLoc),
+                                  data: homeViewModel.dataApi.isEmpty  == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.':homeViewModel.dataApi[0].ogLoc),
                               newestDateTile(
                                   title: '분석의뢰일자: ',
-                                  data: homeViewModel.dataApi[0]  == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.': homeViewModel.dataApi[0].analRqstDt ),
+                                  data: homeViewModel.dataApi.isEmpty  == homeViewModel.dataApi.length ? '오늘 데이터가 없습니다.': homeViewModel.dataApi[0].analRqstDt ),
                               newestDateTile(
                                   title: '분석시작일자: ',
                                   data:homeViewModel.dataApi[0] == homeViewModel.dataApi.length ?'오늘 데이터가 없습니다.': homeViewModel.dataApi[0].analStDt ),
@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   // SizedBox(child: homeViewModel.Table),
                   SizedBox(
-                    height: 200,
+                    height: 450,
                   ),
                 ],
               ),
