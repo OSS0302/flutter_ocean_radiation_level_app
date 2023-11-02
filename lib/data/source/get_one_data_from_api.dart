@@ -53,7 +53,7 @@ Future<List<OceanRaditionLevelEntity>> getOneDataFromApi(
             inspKdCd: element["inspKdCd"],
             inspKdNm: element["inspKdNm"],
             numAnalRsltVal: element["numAnalRsltVal"] ?? '',
-            charAnalRsltVal: element["charAnalRsltVal"],
+            charAnalRsltVal: element["charAnalRsltVal"]?? '',
             charPsngVal: element["charPsngVal"],
             charUnPsngVal: element["charUnPsngVal"] ?? '',
             numPsngMinVal: element["numPsngMinVal"],
@@ -74,8 +74,8 @@ Future<List<OceanRaditionLevelEntity>> getOneDataFromApi(
       // List<OceanRaditionLevelEntity > DatalistResult= await getOneDataFromApi( startDate: '20230912', endDate: '20230913'.toString());
       // List<OceanRaditionLevelEntity> dataT = await OceanRaditionLevelDao().getAllRaditionLevel(OceanRaditionLevelEntity(smpNo: '0772023-1810'));
 
-      log('????');
-      log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
+      // log('????');
+      // log('jsonData: ${data["response"]["body"]["items"]["item"]["smpNo"].toString()}');
       // Json 데이터를 저장
       // await saveJsonData(jsonData);
     } else {

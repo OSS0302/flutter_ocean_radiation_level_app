@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ocean_radiation_level/data/source/get_one_data_from_api.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radiation_level_dao.dart';
 import 'package:flutter_ocean_radiation_level/data/source/local/ocean_radition_level_entity.dart';
-import 'package:flutter_ocean_radiation_level/domain/model/ocean_radiation_level_list.dart';
 import 'package:flutter_ocean_radiation_level/presentation/common/string_info_for_nuclear.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:intl/intl.dart';
@@ -98,7 +97,7 @@ class historyScreenController extends ChangeNotifier{
  Future<void> deleteFavorate(OceanRaditionLevelEntity dataList ) async{
     OceanRaditionLevelDao().deleteData(
        dataList
-    ).then((value) => getFavorate());
+    );
  }
 }
 

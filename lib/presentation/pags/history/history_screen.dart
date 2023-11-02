@@ -128,7 +128,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                             ),
                           ),
                           onChanged: (String? value) {
-                            print('onChanged value: 는 $value');
+                            //print('onChanged value: 는 $value');
                             setState(() {
                               historyViewModel.filteredDate(value);
                             });
@@ -154,16 +154,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                   ),
                   Column(
                     children: [
-                      Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height,
-                        child: Expanded(
+                         Expanded(
                           flex: 1,
                           child: Center(
                             child: historyViewModel.dataList.isNotEmpty
@@ -178,8 +169,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                                 : Container(),
                           ),
                         ),
-                      ),
-
                     ],
                   )
 
@@ -234,9 +223,9 @@ class _HistoryScreenState extends State<HistoryScreen>
               child: IconButton(
                 onPressed: () {
                   if (select) {
-                    historyViewModel.deleteFavorate(data);
-                  } else {
                     historyViewModel.addToFavorate(data);
+                  } else {
+                    historyViewModel.deleteFavorate(data);
                   }
                 },
                 icon: select ?  Icon(Icons.favorite): Icon(Icons.favorite_border),
@@ -320,21 +309,14 @@ class _HistoryScreenState extends State<HistoryScreen>
                           .numPsngMinVal}\n'
                           '숫자합격최대값: ${historyViewModel.selectedData!
                           .numPsngMaxVal}\n'
-                          '품목적합여부: ${historyViewModel.selectedData!
-                          .itmFtnsYn}\n'
-                          '항목적합여부: ${historyViewModel.selectedData!
-                          .ciseFtnsYn}\n'
-                          '분석지원코드: ${historyViewModel.selectedData!
-                          .analMchnCd}\n'
-                          '분석지원명: ${historyViewModel.selectedData!
-                          .analMchnNm}\n'
-                          '분석결과편차: ${historyViewModel.selectedData!
-                          .analDevia}\n'
+                          '품목적합여부: ${historyViewModel.selectedData!.itmFtnsYn}\n'
+                          '항목적합여부: ${historyViewModel.selectedData!.ciseFtnsYn}\n'
+                          '분석지원코드: ${historyViewModel.selectedData!.analMchnCd}\n'
+                          '분석지원명: ${historyViewModel.selectedData!.analMchnNm}\n'
+                          '분석결과편차: ${historyViewModel.selectedData!.analDevia}\n'
                           'MDA: ${historyViewModel.selectedData!.mda}\n'
-                          '조사단위코드: ${historyViewModel.selectedData!
-                          .survUnitCd}\n'
-                          '조사단위코드명: ${historyViewModel.selectedData!
-                          .survUnitNm}\n'
+                          '조사단위코드: ${historyViewModel.selectedData!.survUnitCd}\n'
+                          '조사단위코드명: ${historyViewModel.selectedData!.survUnitNm}\n'
                           : '없음',
                     ),
                     const SizedBox(

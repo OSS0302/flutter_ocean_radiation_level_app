@@ -36,7 +36,7 @@ class OceanRaditionLevelDao {
   Future<void> deleteData(OceanRaditionLevelEntity oceanRaditionLevelIndex) async {
     final box = await Hive.openBox<OceanRaditionLevelEntity>(db);
     int? key = box.values
-        .firstWhere((element) =>
+        .singleWhere((element) =>
     element.smpNo == oceanRaditionLevelIndex.smpNo &&
         element.smpNo.toString() == oceanRaditionLevelIndex.smpNo.toString())
         .key;
